@@ -1,0 +1,14 @@
+NewGap (prevGap: int, N: int): (gap: int)
+  require
+    prevGap in [1..N]    -- Requerimiento de acotamiento
+  ensure
+    gap in [1..N]                         -- Propiedad de acotamiento
+    prevGap = 1 then gap = prevGap = 1    -- Propiedad esencial
+    prevGap > 1 then gap < prevGap        -- Propiedad esencial
+  do
+    init
+      gap := (prevGap * 10) / 13
+    adjust
+      if gap < 1 then gap := 1
+    end
+  end

@@ -1,0 +1,12 @@
+macro autopilot-prep;
+
+# the power of autopilot is not enough. run another 10000 on open goals
+tryclose;
+
+# one goal remain open after autopilot
+# it  have to do with the seqPerm condition
+
+macro simp-upd;
+rule seqPermFromSwap;
+rule andRight;
+  auto;

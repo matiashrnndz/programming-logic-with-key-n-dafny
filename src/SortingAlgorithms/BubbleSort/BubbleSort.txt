@@ -1,0 +1,43 @@
+BubbleSort (arr: array<int>)
+  require
+    N > 0    -- Requerimiento de acotamiento
+  ensure
+    sorted_increasing(arr[..])     -- Propiedad de ordenamiento
+    perm(arr[..], old(arr[..]))    -- Propiedad de integridad
+  local
+    N: int
+    i: int
+    j: int
+  do
+    invariant
+      i in [0..N)                     -- Invariante de acotamiento
+      sorted_increasing(arr[i..N))    -- Invariante esencial
+      arr[0..i] <= arr(i..N)          -- Invariante esencial
+      perm(arr[..], old(arr[..]))     -- Invariante esencial
+    init
+      N := arr.length
+      i := N - 1
+    until
+      i = 0
+    step
+      invariant
+        j in [0..i]                     -- Invariante de acotamiento
+        sorted_increasing(arr[i..N))    -- Invariante esencial
+        arr[0..i] <= arr(i..N)          -- Invariante esencial
+        arr[0..j] <= arr[j]             -- Invariante esencial
+        prem(arr[..], old(arr[..]))     -- Invariante esencial
+      init
+        j := 0
+      until
+        j = i
+      step
+        if arr[j] > arr[j + 1] then swap(j, j + 1)
+        j := j + 1
+      variant
+        i - j
+      end
+      i := i - 1
+    variant
+      i
+    end
+  end

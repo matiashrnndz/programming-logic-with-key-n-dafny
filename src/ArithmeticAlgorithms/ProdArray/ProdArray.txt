@@ -1,0 +1,25 @@
+ProdArray (arr: array<int>): (result: int)
+  require
+    true    -- No tiene requerimientos
+  ensure
+    result = prod k when k in [0..N) of arr[k]    -- Propiedad esencial
+  local
+    N: int
+    i: int
+  do
+    invariant
+      i in [0..N]                                   -- Invariante de acotamiento
+      result = prod k when k in [0..i) of arr[k]    -- Invariante esencial
+    init
+      N := arr.length
+      result := 1
+      i := 0
+    until
+      i = N
+    step
+      result := result * arr[i]
+      i := i + 1
+    variant
+      N - i
+    end
+  end

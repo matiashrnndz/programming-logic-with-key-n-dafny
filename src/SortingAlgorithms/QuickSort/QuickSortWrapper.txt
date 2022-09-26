@@ -1,0 +1,18 @@
+QuickSort (arr: array<int>)
+  require
+    N > 0    -- Requerimiento de acotamiento
+  ensure
+    sorted_increasing(arr[..])     -- Propiedad de ordenamiento
+    perm(arr[..], old(arr[..]))    -- Propiedad de integridad
+  local
+    N: int
+    from: int
+    to: int
+  do
+    init
+      N := arr.Length
+      from := 0
+      to := N - 1
+    step
+      QuickSort(arr, from, to)
+  end

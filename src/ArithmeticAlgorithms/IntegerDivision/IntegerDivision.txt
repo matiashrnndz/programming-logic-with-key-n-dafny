@@ -1,0 +1,26 @@
+IntegerDivision (D: int, d: int): (q: int, r: int)
+  require
+    D >= 0    -- Requerimiento de acotamiento
+    d > 0     -- Requerimiento de acotamiento
+  ensure
+    r in [0..d)      -- Propiedad de acotamiento
+    D = d * q + r    -- Propiedad esencial
+  local
+    r: int
+    q: int
+  do
+    invariant
+      r >= 0           -- Invariante de acotamiento
+      D = d * q + r
+    init
+      r := D
+      q := 0
+    until
+      r < d
+    step
+      r := r - d
+      q := q + 1
+    variant
+      r
+    end
+  end

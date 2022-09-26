@@ -1,0 +1,30 @@
+Fibonacci (n: int): (a: int)
+  require
+    n >= 0    -- Requerimiento de acotamiento
+  ensure
+    a = fib(n)    -- Propiedad esencial
+  local
+    a: int
+    b: int
+    i: int
+    temp: int
+  do
+    invariant
+      i in [0..n]       -- Invariante de acotamiento
+      a = fib(i)        -- Invariante esencial
+      b = fib(i + 1)    -- Invariante esencial
+    init
+      a := 1
+      b := 1
+      i := 0
+    until
+      i = n
+    step
+      temp := a
+      a := b
+      b := temp + b
+      i := i + 1
+    variant
+      n - i
+    end
+  end

@@ -1,0 +1,36 @@
+macro autopilot-prep;
+
+#
+# proof obligation for seqPerm after 3 method calls
+select formula="{heapAtPre:=heap || exc:=null || heap:=heapAfter_quicksort_0}
+   seqPerm(seqDef{int u;}(0, array.length, any::select(heap, array, arr(u))),
+           seqDef{int u;}(0, array.length, any::select(heapAtPre, array, arr(u))))";
+
+macro simp-upd;
+
+let @seqPre="seqDef{int u;}(0, array.length, array[u])"
+    @seqPartition="seqDef{int u;}(0, array.length, any::select(heapAfter_partition, array, arr(u)))"
+    @seqQuicksort="seqDef{int u;}(0, array.length, any::select(heapAfter_quicksort, array, arr(u)))"
+    @seqQuicksort0="seqDef{int u;}(0, array.length, any::select(heapAfter_quicksort_0, array, arr(u)))";
+
+rule seqPermSym 
+  formula="seqPerm(@seqPartition, @seqPre)";
+
+rule seqPermSym
+  formula="seqPerm(@seqQuicksort, @seqPartition)";
+
+rule seqPermSym
+  formula="seqPerm(@seqQuicksort0, @seqQuicksort)";
+
+rule seqPermTrans
+  formula="seqPerm(@seqPre, @seqPartition)";
+
+rule seqPermTrans
+  formula="seqPerm(@seqPre, @seqQuicksort)";
+
+rule seqPermSym
+  formula="seqPerm(@seqPre, @seqQuicksort0)";
+
+# Now, the power of autopilot is enough. 
+# Run another 10000 on each open goal.
+tryclose;

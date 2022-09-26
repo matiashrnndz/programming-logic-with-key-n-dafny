@@ -1,0 +1,28 @@
+QuickSort (arr: array<int>, from: int, to: int)
+  require
+    from in [0..N]                                  -- Requerimiento de acotamiento
+    to in [-1..N)                                   -- Requerimiento de acotamiento
+    from <= to + 1                                  -- Requerimiento de acotamiento
+    from > 0 then arr[from - 1] <= arr[from..to]    -- Requerimiento de ordenamiento
+    to < N - 1 then arr[to + 1] >= arr[from..to]    -- Requerimiento de ordenamiento
+  ensure
+    from > 0 then arr[from - 1] <= arr[from..to]    -- Propiedad de ordenamiento
+    to < N - 1 then arr[to + 1] >= arr[from..to]    -- Propiedad de ordenamiento
+    sorted_increasing(arr[from..to])                -- Propiedad de ordenamiento
+    perm(arr[..], old(arr[..]))                     -- Propiedad de integridad
+    arr[0..from) = old(arr[0..from))                -- Propiedad de integridad
+    arr(to..N) = old(arr(to..N))                    -- Propiedad de integridad
+  local
+    m: int
+  do
+    init
+      m := Partition(arr, from, to)
+    until
+      from >= to
+    step
+      Quicksort(arr, from, m - 1)
+      Quicksort(arr, m + 1, to)
+    variant
+      to - from
+    end
+  end

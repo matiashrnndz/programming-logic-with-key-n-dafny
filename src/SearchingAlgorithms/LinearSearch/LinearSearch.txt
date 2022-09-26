@@ -1,0 +1,25 @@
+LinearSearch (arr: array<int>, key: int): (i: int)
+  require
+    true    -- No tiene requerimientos
+  ensure
+    i = -1 then key not in arr[..]    -- Propiedad caso negativo
+    i in [0..N) then key = arr[i]     -- Propiedad caso positivo
+  local
+    N: int
+  do
+    invariant
+      i in [0..N]             -- Invariante de acotamiento
+      key not in arr[0..i)    -- Invariante esencial
+    init
+      i := 0
+      N := arr.length
+    until
+      i = N or arr[i] = key
+    step
+      i := i + 1
+    variant
+      N - i
+    adjust
+      if i = N then -1
+    end
+  end

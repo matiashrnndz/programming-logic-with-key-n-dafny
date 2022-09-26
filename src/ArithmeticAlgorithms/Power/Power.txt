@@ -1,0 +1,23 @@
+Power (base: int, exp: int): (result: int)
+  require
+    exp >= 0    -- Requerimiento de acotamiento
+  ensure
+    result = base^exp    -- Propiedad esencial
+  local
+    e: int
+  do
+    invariant
+      e >= 0                        -- Invariante de acotamiento
+      result * base^e = base^exp    -- Invariante esencial
+    init
+      e := exp
+      result := 1
+    until
+      e = 0
+    step
+      result := result * base
+      e := e - 1
+    variant
+      e
+    end
+  end

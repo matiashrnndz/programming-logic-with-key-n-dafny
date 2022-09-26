@@ -1,0 +1,45 @@
+SelectionSort (arr: array<int>)
+  require
+    N > 0    -- Requerimiento de acotamiento
+  ensure
+    sorted_increasing(arr[..])     -- Propiedad de ordenamiento
+    perm(arr[..], old(arr[..]))    -- Propiedad de integridad
+  local
+    N: int
+    i: int
+    j: int
+    min: int
+  do
+    init
+      N := arr.length
+      i := 0
+    invariant
+      i in [0..N)                     -- Invariante de acotamiento
+      sorted_increasing(arr[0..i])    -- Invariante esencial
+      arr[0..i) <= arr[i..N)          -- Invariante esencial
+      perm(arr[..], old(arr[..]))     -- Invariante esencial
+    until
+      i = N - 1
+    step
+      init
+        j := i + 1
+        min := i
+      invariant
+        j in (i..N]                     -- Invariante de acotamiento
+        min in [i..N)                   -- Invariante de acotamiento
+        arr[min] <= arr[i..j)           -- Invariante esencial
+        prem(arr[..], old(arr[..]))     -- Invariante esencial
+      until
+        j = N
+      step
+        if arr[j] < arr[min] then min := j
+        j := j + 1
+      variant
+        N - j
+      end
+      swap(i, min)
+      i := i + 1
+    variant
+      N - 1 - i
+    end
+  end

@@ -1,0 +1,40 @@
+InsertionSort (arr: array<int>)
+  require
+    N > 0    -- Requerimiento de acotamiento
+  ensure
+    sorted_increasing(arr[..])     -- Propiedad de ordenamiento
+    perm(arr[..], old(arr[..]))    -- Propiedad de integridad
+  local
+    N: int
+    i: int
+    j: int
+  do
+    invariant
+      i in [1..N]                     -- Invariante de acotamiento
+      sorted_increasing(arr[0..i))    -- Invariante esencial
+      perm(arr[..], old(arr[..]))     -- Invariante esencial
+    init
+      N := arr.length
+      i := 1
+    until
+      i = N
+    step
+      invariant
+        j in [0..i]                                                      -- Invariante de acotamiento
+        forall a, b in 0 <= a < b <= i && b != j then arr[a] < arr[b]    -- Invariante esencial
+        prem(arr[..], old(arr[..]))                                      -- Invariante esencial
+      init
+        j := i
+      until
+        j = 0 or arr[j - 1] <= arr[j]
+      step
+        swap(j, j - 1)
+        j := j - 1
+      variant
+        j
+      end
+      i := i + 1
+    variant
+      N - i
+    end
+  end

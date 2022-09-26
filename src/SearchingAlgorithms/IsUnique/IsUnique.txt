@@ -1,0 +1,38 @@
+IsUnique (s: array<char>): (b: bool)
+  require
+    true    -- No tiene requerimientos
+  ensure
+    b <==> forall a, b when a in [0..N) and b in [0..N) and b != a then s[a] != s[b]    -- Propiedad esencial
+  local
+    N: int
+    i: int
+    j: int
+  do
+    invariant
+      i in [0..N]    -- Invariante de acotamiento
+      b <==> forall a, b when a in [0..i) and b in [0..i) and a != b then s[a] != s[b]    -- Invariante esencial
+    init
+      N := s.length
+      b := true
+      i := 0
+    until
+      not b or i = N
+    step
+      invariant
+        j in [0..i]          -- Invariante de acotamiento
+        s[i] != arr[0..j)    -- Invariante esencial
+      init
+        j := 0
+      until
+        j = i or s[j] = s[i]
+      step
+        j := j + 1;
+      variant
+        i - j
+      end
+      b := j = i
+      i := i + 1
+    variant
+      N - i
+    end
+  end
